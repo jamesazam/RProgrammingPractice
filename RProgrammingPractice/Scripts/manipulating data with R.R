@@ -1,4 +1,4 @@
-install.packages('RPostgreSQL')
+install.packages("RPostgreSQL")
 library(RPostgreSQL)
 
 driver       <- dbDriver("PostgreSQL")
