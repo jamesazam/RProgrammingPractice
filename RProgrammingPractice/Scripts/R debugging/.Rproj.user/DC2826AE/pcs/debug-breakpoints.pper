@@ -1,0 +1,21 @@
+{
+    "debugBreakpointsState" : {
+        "breakpoints" : [
+            {
+                "editor_line_number" : 16,
+                "editor_state" : 1,
+                "function_name" : "crazify",
+                "function_steps" : "2,2",
+                "id" : 3,
+                "is_package_breakpoint" : false,
+                "is_pending_debug_completion" : true,
+                "line_number" : 16,
+                "needs_updated_steps" : false,
+                "package_name" : "",
+                "path" : "C:/Users/JAMESAZAM/Desktop/Introduction to R programming - Stanford (Practice)/R debugging/crazify.R",
+                "state" : 1,
+                "type" : 0
+            }
+        ]
+    }
+}
