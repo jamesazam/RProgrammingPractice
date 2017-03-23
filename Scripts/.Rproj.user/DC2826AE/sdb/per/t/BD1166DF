@@ -1,0 +1,21 @@
+{
+    "collab_server" : "",
+    "contents" : "# #purrr practice\n# checkpackages <- function(){\n#     if(!require(\"tidyverse\")){\n#         install.packages(\"tidyverse\")\n#         library(\"tidyverse\")}\n#             library(\"tidyverse\")}\n# checkpackages()\n\n\nlibrary(\"gapminder\")\nlibrary(\"tidyverse\")\n\n\ngapminder <- gapminder %>% mutate(year1950 = year - 1950)\n\nby_country <- gapminder %>%\n    group_by(continent, country)%>%\n    nest()\n\nhead(by_country)\nby_country$data[[1]] #first element in the nested list ",
+    "created" : 1490257556046.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "2153307078",
+    "id" : "BD1166DF",
+    "lastKnownWriteTime" : 1490286078,
+    "last_content_update" : 1490286078477,
+    "path" : "C:/Users/JAMESAZAM/GitRepositories/RProgrammingPractice/Scripts/purrr.R",
+    "project_path" : "purrr.R",
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}
