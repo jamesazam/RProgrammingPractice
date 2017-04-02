@@ -21,7 +21,7 @@ country_model <- function(df){
 models <- by_country %>%
   mutate(model=map(data, country_model))
 
-#look through some rows
+
 models %>% filter(continent=="Africa")
 
 
@@ -39,6 +39,21 @@ library("broom")
 models <- models %>%
   mutate(
     glance = map(model,broom::glance),
+    rsq =glance %>%map_dbl("r.squared"),
     tidy = map(model, broom::tidy),
     augment = map(model, broom::augment)
   )
+models
+unnest(models,data)
+unnest(models,glance, .drop = TRUE) %>%View()
+unnest(models,rsq)%>%View()
+unnest(models,tidy)%>%View()
+unnest(models,augment)%>%View()
+
+
+
+#' CONCLUSION
+#' 1.Store related objects in list-clumns
+#' 2. Learn functional programming to concentrate on the verb
+#' and not the object
+#' 3. Use broom to convert models to tidy data
