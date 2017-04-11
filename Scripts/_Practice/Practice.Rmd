@@ -1,23 +1,33 @@
 ---
-title: "Managing Many Models"
-subtitle: "R Programming Practice with Hardley Wickham"
-author: "James Mba Azam"
-date: "April 2, 2017"
 output:
-  pdf_document: default
   html_document: default
+  number_sections: yes
+  pdf_document: default
 ---
+<div class="row">
 
+<div class="col-lg-3"></div>
+
+<div class="col-lg-6">
+<br>R Programming Practice</br>
+<br>Authored By: James Mba Azam</br>
+<br>Last Updated: `r Sys.Date()`</br>
+</div>
+
+<div class="col-lg-3"></div>
+
+</div>
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 library("gapminder")
 library("tidyverse")
 ```
-###INTRODUCTION
+# MANAGING MANY MODELS (By HARDLEY WICKHAM)
+### Summary
 1. Convert models to tidy dataframes with the BROOM package
-2. Use DPLYR for working with dataframes
-3. Use PURRR for lists
-4. Use TIDYR for converting between dataframe and lists of dataframes
+2. Use `dplyr` for manipulating dataframes
+3. Use `purrr` for list-wise operations
+4. Use `tidyr` for converting between dataframe and lists of dataframes
 ```{r}
 #Import data from the gapminder package (very cool package with great data)
 # year1950 is a column that contains the number of years since 1950
@@ -70,11 +80,83 @@ unnest(models,augment)#%>%View()
 ```
 
 
-### CONCLUSION
+### Conclusion
 1. Store related objects in list-clumns 
 2. Learn functional programming to concentrate on the verb 
 and not the object
 3. Use broom to convert models to tidy data
 
 
+# DATA VISUALIZATION
+```{r}
+library("ggplot2")
+library("dplyr")
+library(reshape2)
+library(lubridate)
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+library(scales)
+library(gridExtra)
+```
+
+```{r}
+data("economics", package = "ggplot2")
+head(economics)
+# Create the plot
+ggplot(data = economics) + geom_line(aes(x = date, y = unemploy))
+```
+##Scatter Plots
+It’s primarily used by people doing analysis and not reporting. The inventor of the scatter plot was looking for the correlation between area and population.
+```{r}
+data("midwest", package = "ggplot2")
+ggplot(data=midwest, aes(x=area, y=poptotal))+geom_point()
+
+
+#further customization for illustration purposes
+ggplot(data=midwest, aes(x=area, y=poptotal, col=state, size=popdensity))+geom_point()
+
+
+#labelling of the axis
+ggplot(data=midwest, aes(x=area, y=poptotal))+geom_point(aes(col=state, size=popdensity))+
+  geom_smooth(method="loess", se=F) + 
+  xlim(c(0, 0.1)) + 
+  ylim(c(0, 500000)) + 
+  labs(subtitle="Area Vs Population", 
+       y="Population", 
+       x="Area", 
+       title="Scatterplot", 
+       caption = "Source: midwest (ggplot2)")
+#note that the se=F is to indicate that error bars should not be shown
+```
+
+##Density Plots
+Density plots are similar to histograms except that they illustrate percentages. They are used to display the distribution of data.
+
+we will be using the R-base mpg data. Let us preview the data now.
+```{r}
+head(mpg)
+img <- ggplot(data = mpg, aes(cty))
+img + geom_density(aes(fill=factor(cyl)), alpha=0.8) + 
+    labs(title="Density plot", 
+         subtitle="City Mileage Grouped by Number of cylinders",
+         caption="Source: mpg (R-base)",
+         x="City Mileage",
+         fill="# Cylinders")
+```
+
+By using the assignment feature of `ggplot()`. We can keep the assigned object `img`. It is very useful if we want to use `img` as the fundamental plot on which to explore other visualizations. It is also handy if you need to save the output of a chart to an image file.
+
+By simply writing `aes(cty)`, `ggplot` assumes we mean `aes(x = cty)`. 
+`alpha` is the transparency (or opacity) of the area under the curve.
+
+As mentioned earlier, we can explore other plots by easily plotting on `img` since it has the basic layer established on it. For example, we can explore the `class` variable as follows:
+```{r}
+img + geom_density(aes(fill=factor(class)), alpha=0.8) + 
+    labs(title="Density plot", 
+         subtitle="City Mileage Grouped by Class",
+         caption="Source: mpg (R-Base)",
+         x="City Mileage",
+         fill="Class")
+```
 
