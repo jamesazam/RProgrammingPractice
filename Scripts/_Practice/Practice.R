@@ -50,6 +50,7 @@ unnest(models,rsq)%>%View()
 unnest(models,tidy)%>%View()
 unnest(models,augment)%>%View()
 
+<<<<<<<
 
 
 #' CONCLUSION
@@ -57,3 +58,22 @@ unnest(models,augment)%>%View()
 #' 2. Learn functional programming to concentrate on the verb
 #' and not the object
 #' 3. Use broom to convert models to tidy data
+
+=======
+
+
+
+#######################################################
+library("ggplot2")
+library("dplyr")
+data("economics",package = "ggplot2")
+ggplot(data = economics) + geom_line(aes(x=date,y=unemploy))
+
+library(reshape2)
+library(lubridate)
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+library(scales)
+library(gridExtra)
+>>>>>>>
