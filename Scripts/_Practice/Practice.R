@@ -42,3 +42,20 @@ models <- models %>%
     tidy = map(model, broom::tidy),
     augment = map(model, broom::augment)
   )
+
+
+
+
+#######################################################
+library("ggplot2")
+library("dplyr")
+data("economics",package = "ggplot2")
+ggplot(data = economics) + geom_line(aes(x=date,y=unemploy))
+
+library(reshape2)
+library(lubridate)
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+library(scales)
+library(gridExtra)
