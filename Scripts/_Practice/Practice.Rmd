@@ -91,13 +91,13 @@ and not the object
 ```{r}
 library("ggplot2")
 library("dplyr")
-library(reshape2)
-library(lubridate)
-library(dplyr)
-library(tidyr)
-library(ggplot2)
-library(scales)
-library(gridExtra)
+library("reshape2")
+library("lubridate")
+library("dplyr")
+library("tidyr")
+library("ggplot2")
+library("scales")
+library("gridExtra")
 ```
 
 ```{r}
@@ -158,5 +158,95 @@ img + geom_density(aes(fill=factor(class)), alpha=0.8) +
          caption="Source: mpg (R-Base)",
          x="City Mileage",
          fill="Class")
+```
+##Histograms
+ We are going to show the city mileage with a histogram
+ 
+```{r}
+img + geom_histogram(bins = 20,aes(col="red"))+
+  labs(title="Histogram", 
+         caption="Source: mpg",
+         x="City Mileage")
+```
+#Bar/Column Chart
+Technically, the term “column chart” can be used when the bars run vertically.
+
+We need to first prepare the data. We shall use the `table` function to create a frequency table of all the car manufacturers. `ggplot` works best with data frames and so, we will convert the frequency table to a data frame as well. All this can be achieved as follows
+```{r}
+dat <- as.data.frame(table(mpg$manufacturer))
+#set a theme
+theme_set(theme_bw())
+
+img <- ggplot(data=dat, aes(x=Var1, y=Freq))
+img + geom_bar(stat = "identity", width = 0.5, fill="tomato2") +
+    labs(title="Bar Chart", subtitle="Manufacturer of vehicles", 
+           caption="Source: Frequency of Manufacturers from 'mpg' dataset") +
+      theme(axis.text.x = element_text(angle=65, vjust=0.6))
+
+```
+
+<b>Side Notes:</b>
+<ol>
+<li>With `theme_set()`, you can set a background theme for your graphs. There are several default ones you can choose from. Just type `theme_` and press the `tab` button.</li>
+<li>`theme(axis.text.x = element_text(angle=65, vjust=0.6))` tilts the text along that angle on the x-axis labelling. </li>
+<li>`vjust=0.6` sets the distance between the text and the x-axis line.
+<li> `stat="identity"` tells ggplot to use the actual value of `Freq`.</li>
+</ol>
+
+Column charts can be flipped around with the `coord_flip()` function.
+```{r}
+img <- ggplot(dat,aes(reorder(Var1,Freq),Freq))
+img + geom_bar(stat = "identity",width = 0.5,fill="tomato2")+
+    labs(title="Bar Chart", 
+         subtitle="Manufacturer of vehicles", 
+           x = 'Manufacturer',
+           caption="Source: Frequency of Manufacturers from 'mpg' dataset") + theme(axis.text.x = element_text(angle=65, vjust=0.6)) + coord_flip()
+```
+Nest, we want to illustrate how `hwy` is related to the `manufacturer` and in terms `cyl`
+
+
+```{r}
+img <-  ggplot(mpg,aes(x=manufacturer,y=hwy,col=factor(cyl),fill=factor(cyl)))
+img + geom_bar(stat='identity') + 
+  theme(axis.text.x = element_text(angle=65, vjust=0.6))
+```
+By default, the bars are stacked as shown above. In order to place them side by side for better comparison, we can set `position="dodge"` in the `geom_bar` properties. It will look like the following:
+```{r}
+img <-  ggplot(mpg,aes(x=factor(cyl),y=hwy,col=factor(cyl),fill=factor(cyl)))
+img + geom_bar(stat='identity', position = "dodge") + 
+  theme(axis.text.x = element_text(angle=65, vjust=0.6))
+```
+
+Unless you are very patient to squeeze your eyes in order to read the graphs, it is obvious that the graph above is very difficult to read. One nice feature of `ggplot` is the `facet_wrap` function. It splits the graphs according to a variable you specify. Let us see how it works in the code below:
+```{r}
+img <-  ggplot(mpg,aes(x=factor(cyl),y=hwy,col=factor(cyl),fill=factor(cyl)))
+img + geom_bar(stat='identity', position = "dodge") + 
+  facet_wrap(~manufacturer)
+```
+
+
+##Spatial Maps
+```{r  messages=FALSE, cache=FALSE}
+library(ggmap)
+library(ggalt)
+
+# Get the Map ----------------------------------------------
+colo_map <- qmap("Stellenbosch, South Africa",zoom = 7, source = "google")   
+
+# Get Coordinates for Places ---------------------
+colo_places <- c("Idas Valley",
+                    "Stellenbosch University")
+
+places_loc <- geocode(colo_places)  # get longitudes and latitudes
+
+
+# Plot Open Street Map -------------------------------------
+colo_map + geom_point(aes(x=lon, y=lat),
+                             data = places_loc, 
+                             alpha = 0.7, 
+                             size = 2, 
+                             color = "tomato") + 
+                  geom_encircle(aes(x=lon, y=lat),
+                                data = places_loc, size = 1, color = "blue")
 ```
 
